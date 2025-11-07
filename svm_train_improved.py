@@ -81,8 +81,8 @@ def train_improved_svm():
         
         # Merge datasets
         train_data = train_meta.merge(features, left_on='filename', right_on='file_id', how='inner')
-        val_data = val_meta.merge(features, on='filename', how='inner')
-        test_data = test_meta.merge(features, on='filename', how='inner')
+        val_data = val_meta.merge(features, left_on='filename', right_on='file_id', how='inner')  
+        test_data = test_meta.merge(features, left_on='filename', right_on='file_id', how='inner')  
         
         # Prepare features and labels
         feature_cols = [col for col in features.columns if col not in ['file_id', 'species', 'processed_path', 'split', 'provenance']]
