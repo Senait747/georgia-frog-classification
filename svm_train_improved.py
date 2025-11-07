@@ -21,7 +21,7 @@ print("=== Checking if files exist ===")
 files_to_check = [
     'processed/spectrograms/features_aggregated.csv',
     'processed/spectrograms/metadata_train.csv', 
-  
+    'processed/spectrograms/metadata_val.csv',
     'processed/spectrograms/metadata_test.csv'
 ]
 
@@ -80,12 +80,12 @@ def train_improved_svm():
         test_meta = pd.read_csv('processed/spectrograms/metadata_test.csv')
         
         # Merge datasets
-        train_data = train_meta.merge(features, on='filename', how='inner')
+        train_data = train_meta.merge(features, left_on='filename', right_on='file_id', how='inner')
         val_data = val_meta.merge(features, on='filename', how='inner')
         test_data = test_meta.merge(features, on='filename', how='inner')
         
         # Prepare features and labels
-        feature_cols = [col for col in features.columns if col not in ['filename', 'species']]
+        feature_cols = [col for col in features.columns if col not in ['file_id', 'species', 'processed_path', 'split', 'provenance']]
         
         X_train = train_data[feature_cols]
         y_train = train_data['species']
